@@ -1,0 +1,13 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Snake game static site with minimal Node server for Render",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "PORT=10000 node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

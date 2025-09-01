@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Game con rắn (Snake) cổ điển chạy trên trình duyệt – MIT Open Source" />
+    <title>🐍 Snake Game – Open Source (MIT)</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+  </head>
+  <body>
+    <main class="layout">
+      <section class="card">
+        <header class="header">
+          <h1 id="txt_title">🐍 Snake Game</h1>
+          <p class="sub" id="txt_sub">Phiên bản web – điều khiển bằng phím mũi tên hoặc vuốt trên mobile</p>
+        </header>
+
+        <div class="hud">
+          <div class="scoreboard">
+            <div class="score" id="txt_score_label">Điểm: <span id="score">0</span></div>
+            <div class="highscore" id="txt_high_label">🏆 Kỷ lục: <span id="highscore">0</span></div>
+          </div>
+          <div class="controls">
+            <button id="startBtn" class="btn primary">▶️ <span id="txt_start_btn">Bắt đầu</span></button>
+            <button id="pauseBtn" class="btn">⏸️ <span id="txt_pause_btn">Tạm dừng</span></button>
+            <button id="restartBtn" class="btn danger">🔄 <span id="txt_restart_btn">Chơi lại</span></button>
+            <button id="settingsBtn" class="btn">⚙️ <span id="txt_settings_btn">Cài đặt</span></button>
+            <button id="leaderboardBtn" class="btn">🏁 <span id="txt_leaderboard_btn">BXH Quốc gia</span></button>
+          </div>
+        </div>
+
+        <div class="stage-wrap">
+          <canvas id="game" width="480" height="480" aria-label="Snake game canvas" role="img"></canvas>
+          <div class="overlay" id="overlay">
+            <div class="overlay-content" id="overlayContent"></div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <p id="txt_footer_owner">
+            👑 Chủ sở hữu: <strong>Zweyx</strong> • 👨‍💻 Developers: <strong>Gen 2k14</strong> • 📄 Giấy phép: <a href="./LICENSE" target="_blank" rel="noopener">MIT</a>
+          </p>
+          <p class="tips" id="txt_footer_tips">
+            Phím tắt: ⬆️⬇️⬅️➡️ di chuyển • Space: Tạm dừng/Tiếp tục • R: Chơi lại
+          </p>
+          <p class="copy">© 2025 Zweyx • MIT</p>
+        </footer>
+      </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="leaderboardModal" aria-hidden="true" role="dialog" aria-labelledby="leaderboardTitle">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2 id="leaderboardTitle">🏁 <span id="txt_leaderboard_title">Bảng xếp hạng quốc gia</span></h2>
+        </div>
+        <div class="modal-body">
+          <div class="grid2">
+            <label>
+              <span id="txt_country_label">Quốc gia của bạn</span>
+              <select id="countrySelect"></select>
+            </label>
+            <label>
+              <span id="txt_privacy_label">Chế độ lưu trữ</span>
+              <select id="storageModeSelect">
+                <option value="local">Local-only (tiết kiệm dung lượng)</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <p id="txt_leaderboard_hint">Dữ liệu sẽ lưu tối thiểu để tiết kiệm dung lượng. Khi có kỉ lục mới, bản cũ sẽ được thay thế.</p>
+            <div id="leaderboardList" style="max-height: 240px; overflow: auto;"></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn" id="closeLeaderboardBtn"><span id="txt_close_leaderboard_btn">Đóng</span></button>
+          <button class="btn primary" id="submitScoreBtn"><span id="txt_submit_btn">Gửi kỉ lục của tôi</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="settingsModal" aria-hidden="true" role="dialog" aria-labelledby="settingsTitle">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2 id="settingsTitle">⚙️ <span id="txt_settings_title">Cài đặt</span></h2>
+        </div>
+        <div class="modal-body">
+          <div class="grid2">
+            <label>
+              <span id="txt_lang_label">Ngôn ngữ</span>
+              <select id="langSelect">
+                <option value="vi">Tiếng Việt</option>
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ru">Русский</option>
+                <option value="fr">Français</option>
+                <option value="ja">日本語</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="pt">Português</option>
+              </select>
+            </label>
+            <label>
+              <span id="txt_theme_label">Giao diện</span>
+              <select id="themeSelect">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="gaming">Gaming (Cyberpunk)</option>
+                <option value="hacker">Hacker (Matrix)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid2">
+            <label>
+              <span id="txt_difficulty_label">Độ khó</span>
+              <select id="difficultySelect">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label>
+              <span id="txt_map_label">Bản đồ</span>
+              <select id="mapSelect">
+                <option value="Classic">Classic</option>
+                <option value="Box">Box</option>
+                <option value="Cross">Cross</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid2">
+            <label>
+              <span id="txt_grid_label">Kích thước ô (px)</span>
+              <input id="gridSizeInput" type="number" min="12" max="40" step="2" value="24" />
+            </label>
+            <label>
+              <span id="txt_speed_label">Tốc độ cơ bản (ms)</span>
+              <input id="baseSpeedInput" type="number" min="50" max="300" step="5" value="110" />
+            </label>
+          </div>
+
+          <p class="hint" id="txt_settings_hint">Một số thay đổi sẽ áp dụng khi bạn bắt đầu lại trận mới.</p>
+        </div>
+        <div class="modal-foot">
+          <button class="btn" id="closeSettingsBtn"><span id="txt_close_btn">Đóng</span></button>
+          <button class="btn primary" id="saveSettingsBtn"><span id="txt_save_btn">Lưu</span></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
