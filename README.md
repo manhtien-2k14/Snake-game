@@ -6,6 +6,9 @@ Open source MIT – Chủ sở hữu: **Zweyx** • Developers: **Gen 2k14** •
 
 🔗 Test & Link : snake-game-k3vo.onrender.com
 
+🖼️ Preview : 
+![Preview](3.png)
+
 Game con rắn cổ điển viết bằng HTML5 Canvas + CSS3 + JavaScript thuần. Nhanh, mượt và dễ tùy biến.
 
 ## ✨ Tính năng
